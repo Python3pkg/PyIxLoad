@@ -17,16 +17,16 @@
 #
 ################################################################################
 
-import Tkinter, sys, os, re
+import tkinter, sys, os, re
 
 
 try:
     # create a TCL interpreter instance (Python 2.5+)
-    _tcl_ = Tkinter.Tcl()
+    _tcl_ = tkinter.Tcl()
     _tclCallback_ = _tcl_
 except:
     # create a TCL interpreter instance (Python 2.4-)
-    _tk_ = Tkinter.Tk()
+    _tk_ = tkinter.Tk()
     _tcl_ = _tk_.tk
     _tclCallback_ = _tk_
 
@@ -49,18 +49,18 @@ def _GetArgsTclFormat(args, kwargs, tclCmd, prefix = ""):
     # help function for formatting args and kwargs to tcl format
     for value in args:
         tclCmd += _python2Tcl(value, prefix)
-    for (key, value) in kwargs.items():
+    for (key, value) in list(kwargs.items()):
         tclCmd += " -%s%s" % (key, _python2Tcl(value))
     return tclCmd
 
 def _getStatArgs(**kwargs):
     tclCmd = ""
-    for (key, value) in kwargs.items():
+    for (key, value) in list(kwargs.items()):
         if key == "filterList":
             if type(value) != dict:
                 raise "Invalid value type for %s which needs to be dictionary" % key
             tclCmd += ' -%s {' % key
-            for (filterName, filters) in value.items():
+            for (filterName, filters) in list(value.items()):
                 tclCmd += '"%s" {' % filterName
                 for filter in filters:
                     tclCmd += '"%s" ' % filter
@@ -78,7 +78,7 @@ def _python2Tcl(value, prefix = ""):
     result = None
     if isinstance(value, IxLoadObjectProxy):
         result = " %s%s" % (prefix, value._tclObj_)
-    elif isinstance(value, basestring):
+    elif isinstance(value, str):
         # scriptgen sometimes generates python with escaped brackets [] which
         # isn't necessary for python, so here we need to escape them only if not already escaped
         # Avoid having a path formatted like this: ""[path]""

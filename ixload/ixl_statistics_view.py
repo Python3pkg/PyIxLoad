@@ -62,7 +62,7 @@ class IxlStatView(object):
         :returns: all statistics values for the requested time stamp.
         """
 
-        return OrderedDict(zip(self.captions, self.statistics[time_stamp]))
+        return OrderedDict(list(zip(self.captions, self.statistics[time_stamp])))
 
     def get_stats(self, stat_name):
         """
@@ -70,7 +70,7 @@ class IxlStatView(object):
         :returns: all values of the requested statistic for all objects.
         """
 
-        return [self.get_stat(r, stat_name) for r in self.statistics.keys()]
+        return [self.get_stat(r, stat_name) for r in list(self.statistics.keys())]
 
     def get_stat(self, time_stamp, stat_name):
         """
@@ -87,7 +87,7 @@ class IxlStatView(object):
         :returns: all values of the requested statistic for all objects.
         """
 
-        return [self.get_counter(r, stat_name) for r in self.statistics.keys()]
+        return [self.get_counter(r, stat_name) for r in list(self.statistics.keys())]
 
     def get_counter(self, time_stamp, stat_name):
         """
